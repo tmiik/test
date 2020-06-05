@@ -76,7 +76,7 @@ if ( grepl('vel25_vna-master', w_folder, fixed = TRUE) ) {
 if ( grepl('test-master', w_folder, fixed = TRUE) ) {
     w_fname = gsub('bin/tmp/tmp/test-master', 'work_file.xlsm', w_folder) 
 }
-#print(w_fname)
+print(w_fname)
 
 
 #============================ UI =========================================
