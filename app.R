@@ -70,13 +70,14 @@ if (w_folder == "H:/PD/Vel25/vel25_analysis/vel25_app1") {
 
 
 if ( grepl('vel25_vna-master', w_folder, fixed = TRUE) ) {
-    w_fname = gsub('bin/tmp/tmp/vel25_vna-master', 'work_file.xlsm', w_folder) 
+    arcname = 'vel25_vna-master'
 }
 
 if ( grepl('test-master', w_folder, fixed = TRUE) ) {
-    w_fname = gsub('bin/tmp/tmp/test-master', 'work_file.xlsm', w_folder) 
+    arcname = 'test-master'
 }
-print(w_fname)
+w_fname = gsub(paste0('bin/tmp/tmp/', arcname), 'work_file.xlsm', w_folder) 
+#print(w_fname)
 
 
 #============================ UI =========================================
@@ -356,7 +357,7 @@ server <- function(input, output, session) {
     
 
     SaveData = function(w_folder) {
-        fdir = gsub('bin/tmp/tmp/vel25_vna-master', '', w_folder)
+        fdir = gsub(paste0('bin/tmp/tmp/', arcname), '', w_folder)
         
         outfilename = paste0(fdir, 'data_out.csv')
 
@@ -376,7 +377,7 @@ server <- function(input, output, session) {
 
     
     ReadData = function(w_folder) {
-        fdir = gsub('bin/tmp/tmp/vel25_vna-master', '', w_folder)
+        fdir = gsub(paste0('bin/tmp/tmp/', arcname), '', w_folder)
         
         outfilename = paste0(fdir, 'data_out.csv')
         if (!file.exists(outfilename)) {
