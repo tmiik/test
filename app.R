@@ -80,6 +80,9 @@ w_fname = gsub(paste0('bin/tmp/tmp/', arcname), 'work_file.xlsm', w_folder)
 #print(w_fname)
 
 
+palette <- colorRampPalette(c("indianred1", "chartreuse2", "indianred1"))
+
+
 #============================ UI =========================================
 
 
@@ -218,29 +221,30 @@ server <- function(input, output, session) {
                        
             }
             f_list = f_list[ix]
-            
-            if (length(f_list) == 0) {
-                df_error = data.frame(c('No available csv files!'))
-                colnames(df_error) = 'Error'
-                
-                s = paste0('No available csv files!')
-                infomessage('Error', s)
-                return(-1)                 
-            }
-            
-            f_list = gsub("/", "\\\\", f_list)
-            
-            #============================================================================
-            
-            # find maximum depth of levels
-            max_lev = 1
-            for (c in f_list) {
-                k = length(unlist(strsplit(c, "\\\\")))
-                if (k > max_lev) {max_lev = k}
-            }
-            levs =  paste0('lev_', seq( 1, max_lev-1 ) )
-        
         })
+        
+        if (length(f_list) == 0) {
+            df_error = data.frame(c('No available csv files!'))
+            colnames(df_error) = 'Error'
+            
+            s = paste0('No available csv files!')
+            infomessage('Error', s)
+            return(-1)                 
+        }
+        
+        f_list = gsub("/", "\\\\", f_list)
+        
+        #============================================================================
+        
+        # find maximum depth of levels
+        max_lev = 1
+        for (c in f_list) {
+            k = length(unlist(strsplit(c, "\\\\")))
+            if (k > max_lev) {max_lev = k}
+        }
+        levs =  paste0('lev_', seq( 1, max_lev-1 ) )
+        
+
         
         out = data.frame()
         info = data.frame()
@@ -416,10 +420,9 @@ server <- function(input, output, session) {
             return()
         }  
 
-        # updatePickerInput(session, "Lev1_input",  choices = character(0), selected = c()  )   
-        # updatePickerInput(session, "Lev2_input",  choices = character(0), selected = c()  )   
+         res = suppressWarnings(UploadData(d_folder)) 
+        #if (res == -1) {return ()}
         
-        res = suppressWarnings(UploadData(d_folder)) 
         data_0 <<- res$out
         info_0 <<- res$info
         df_ht_0 <<- res$df_ht
@@ -452,9 +455,6 @@ server <- function(input, output, session) {
     # read data button
     observeEvent(input$data_rd_butt, {
 
-        # updatePickerInput(session, "Lev1_input",  choices = character(0), selected = c()  )   
-        # updatePickerInput(session, "Lev2_input",  choices = character(0), selected = c()  )   
-        
         withProgress({
             
             incProgress(0.7, detail = '')
@@ -532,8 +532,7 @@ server <- function(input, output, session) {
             colnames(tmp) = paste0("c", colnames(tmp))
             tmp = tmp[, 2:ncol(tmp)]
 
-            palette <- colorRampPalette(c("red", "green", "red"))
-            
+
             p <- plot_ly(z = data.matrix(tmp), x = colnames(tmp), y = rownames(tmp), 
                          type = "heatmap", colors = palette(50), opacity=0.6,
                          zauto = FALSE, zmin = rea_st$fmin, zmax = rea_st$fmax) %>%
@@ -542,7 +541,7 @@ server <- function(input, output, session) {
                                                       titlefont = list(size = 16)) )  %>%    
                 
             add_annotations(x = anno_x, y = anno_y, text = anno_text,  xshift = 0,  yshift = 150/length(unique(anno_y)),
-                            showarrow = FALSE, font=list(color='blue', size=8))  %>%
+                            showarrow = FALSE, font=list(color='brown', size=8))  %>%
                 
             config(displaylogo = FALSE) %>%
             config(modeBarButtonsToRemove = c("select2d", "lasso2d", "hoverClosestCartesian", "hoverCompareCartesian"))
@@ -573,8 +572,6 @@ server <- function(input, output, session) {
                 tmp = tmp[, 2:ncol(tmp)]
     
     
-                palette <- colorRampPalette(c("red", "green", "red"))
-    
                 p <- plot_ly(z = data.matrix(tmp), x = colnames(tmp), y = rownames(tmp),
                              type = "heatmap", colors = palette(50),  opacity=0.6,
                              zauto = FALSE, zmin = rea_st$zmin, zmax = rea_st$zmax) %>%
@@ -582,7 +579,7 @@ server <- function(input, output, session) {
                                                           titlefont = list(size = 16)) )  %>%    
                     
                 add_annotations(x = anno_x, y = anno_y, text = anno_text,  xshift = 0,  yshift = 150/length(unique(anno_y)),
-                                    showarrow = FALSE, font=list(color='blue', size=8))  %>%
+                                    showarrow = FALSE, font=list(color='brown', size=8))  %>%
 
     
                 config(displaylogo = FALSE) %>%
@@ -616,8 +613,6 @@ server <- function(input, output, session) {
                 tmp = tmp[, 2:ncol(tmp)]
     
     
-                palette <- colorRampPalette(c("red", "green", "red"))
-    
                 p <- plot_ly(z = data.matrix(tmp), x = colnames(tmp), y = rownames(tmp),
                              type = "heatmap", colors = palette(50), opacity=0.6,
                              zauto = FALSE, zmin = rea_st$rmin, zmax = rea_st$rmax) %>%
@@ -626,7 +621,7 @@ server <- function(input, output, session) {
                                                                titlefont = list(size = 16)) )  %>%    
                     
                     add_annotations(x = anno_x, y = anno_y, text = anno_text,  xshift = 0,  yshift = 150/length(unique(anno_y)),
-                                    showarrow = FALSE, font=list(color='blue', size=8))  %>%
+                                    showarrow = FALSE, font=list(color='brown', size=8))  %>%
                     
 
                     config(displaylogo = FALSE) %>%
@@ -662,8 +657,6 @@ server <- function(input, output, session) {
                 tmp = tmp[, 2:ncol(tmp)]
     
     
-                palette <- colorRampPalette(c("red", "green", "red"))
-    
                 p <- plot_ly(z = data.matrix(tmp), x = colnames(tmp), y = rownames(tmp),
                              type = "heatmap", colors = palette(50),  opacity=0.6,
                              zauto = FALSE, zmin = rea_st$xmin, zmax = rea_st$xmax) %>%
@@ -671,7 +664,7 @@ server <- function(input, output, session) {
                                                               titlefont = list(size = 16)) )  %>%    
                     
                     add_annotations(x = anno_x, y = anno_y, text = anno_text,  xshift = 0,  yshift = 150/length(unique(anno_y)),
-                                    showarrow = FALSE, font=list(color='blue', size=8))  %>%
+                                    showarrow = FALSE, font=list(color='brown', size=8))  %>%
                     
 
                     config(displaylogo = FALSE) %>%
@@ -705,8 +698,6 @@ server <- function(input, output, session) {
                 tmp = tmp[, 2:ncol(tmp)]
                 
                 
-                palette <- colorRampPalette(c("red", "green", "red"))
-                
                 p <- plot_ly(z = data.matrix(tmp), x = colnames(tmp), y = rownames(tmp),
                              type = "heatmap", colors = palette(50),  opacity=0.6,
                              zauto = FALSE, zmin = rea_st$smin, zmax = rea_st$smax) %>%
@@ -714,7 +705,7 @@ server <- function(input, output, session) {
                                                                                                             titlefont = list(size = 16)) )  %>%    
                     
                     add_annotations(x = anno_x, y = anno_y, text = anno_text,  xshift = 0,  yshift = 150/length(unique(anno_y)),
-                                    showarrow = FALSE, font=list(color='blue', size=8))  %>%
+                                    showarrow = FALSE, font=list(color='brown', size=8))  %>%
                     
                     
                     config(displaylogo = FALSE) %>%
@@ -746,4 +737,6 @@ shinyApp(ui = ui, server = server)
 
 # check user access to data folder
 # capture output cmd window in excel file
+# check as.logical
+
 
