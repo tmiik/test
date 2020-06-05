@@ -68,9 +68,15 @@ if (w_folder == "H:/PD/Vel25/vel25_analysis/vel25_app1") {
 #print(w_folder)
 
 
-w_fname = gsub('bin/tmp/tmp/vel25_vna-master', 'work_file.xlsm', w_folder)
-#print(w_fname)
 
+if ( grepl('vel25_vna-master', w_folder, fixed = TRUE) ) {
+    w_fname = gsub('bin/tmp/tmp/vel25_vna-master', 'work_file.xlsm', w_folder) 
+}
+
+if ( grepl('test-master', w_folder, fixed = TRUE) ) {
+    w_fname = gsub('bin/tmp/tmp/test-master', 'work_file.xlsm', w_folder) 
+}
+#print(w_fname)
 
 
 #============================ UI =========================================
