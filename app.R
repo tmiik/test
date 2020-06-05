@@ -617,7 +617,7 @@ server <- function(input, output, session) {
                              type = "heatmap", colors = palette(50), opacity=0.6,
                              zauto = FALSE, zmin = rea_st$rmin, zmax = rea_st$rmax) %>%
     
-                    layout(title="<b>Resistance R</b>", title = list( font = list(size = 18)), xaxis = list( title = "Notch/Wafer location",
+                    layout(title="<b>Resistance R (transformed)</b>", title = list( font = list(size = 18)), xaxis = list( title = "Notch/Wafer location",
                                                                titlefont = list(size = 16)) )  %>%    
                     
                     add_annotations(x = anno_x, y = anno_y, text = anno_text,  xshift = 0,  yshift = 150/length(unique(anno_y)),
@@ -660,7 +660,7 @@ server <- function(input, output, session) {
                 p <- plot_ly(z = data.matrix(tmp), x = colnames(tmp), y = rownames(tmp),
                              type = "heatmap", colors = palette(50),  opacity=0.6,
                              zauto = FALSE, zmin = rea_st$xmin, zmax = rea_st$xmax) %>%
-                    layout(title="<b>Reactance X</b>", title = list( font = list(size = 18)), xaxis = list( title = "Notch/Wafer location",
+                    layout(title="<b>Reactance X (transformed)</b>", title = list( font = list(size = 18)), xaxis = list( title = "Notch/Wafer location",
                                                               titlefont = list(size = 16)) )  %>%    
                     
                     add_annotations(x = anno_x, y = anno_y, text = anno_text,  xshift = 0,  yshift = 150/length(unique(anno_y)),
