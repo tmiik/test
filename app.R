@@ -229,7 +229,7 @@ server <- function(input, output, session) {
             
             s = paste0('No available csv files!')
             infomessage('Error', s)
-            return(-1)                 
+            return()                 
         }
         
         f_list = gsub("/", "\\\\", f_list)
@@ -421,7 +421,7 @@ server <- function(input, output, session) {
         }  
 
          res = suppressWarnings(UploadData(d_folder)) 
-        #if (res == -1) {return ()}
+        if (is.null(res)) {return ()}
         
         data_0 <<- res$out
         info_0 <<- res$info
